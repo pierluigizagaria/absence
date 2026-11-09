@@ -4,7 +4,6 @@
 -->
 <template>
 	<span class="status-chip" :style="{ '--chip-text': meta.text, '--chip-tint': meta.tint }">
-		<span class="status-chip__dot" aria-hidden="true">{{ meta.icon }}</span>
 		{{ meta.label }}
 	</span>
 </template>

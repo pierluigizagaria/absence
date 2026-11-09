@@ -9,9 +9,6 @@
 			:active="active"
 			:forceDisplayActions="true"
 			@click="$emit('select', request.id)">
-			<template #icon>
-
-			</template>
 			<template #subname>
 				{{ subtitle }}
 			</template>

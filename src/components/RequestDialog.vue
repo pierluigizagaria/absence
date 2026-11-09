@@ -42,11 +42,11 @@
 					label="label"
 					:clearable="false"
 					:aria-label-combobox="t('absence', 'Leave type')">
-					<template #option="{ icon, label }">
-						<span class="opt"><span class="opt__icon">{{ icon }}</span>{{ label }}</span>
+					<template #option="{ label }">
+						<span>{{ label }}</span>
 					</template>
-					<template #selected-option="{ icon, label }">
-						<span class="opt"><span class="opt__icon">{{ icon }}</span>{{ label }}</span>
+					<template #selected-option="{ label }">
+						<span>{{ label }}</span>
 					</template>
 				</NcSelect>
 			</div>

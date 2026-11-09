@@ -42,7 +42,7 @@ class PageController extends Controller {
 			$this->leaveTypeMapper->findAll(),
 		));
 
-		Util::addScript($this->appName, 'absence-main');
+		Util::addScript($this->appName, 'absence-main-compact');
 
 		$response = new TemplateResponse($this->appName, 'main');
 		$csp = new ContentSecurityPolicy();
