@@ -182,7 +182,7 @@
 
 <script>
 import { showError } from '@nextcloud/dialogs'
-import { t } from '@nextcloud/l10n'
+import { t, getCanonicalLocale } from '@nextcloud/l10n'
 import NcAppSidebar from '@nextcloud/vue/components/NcAppSidebar'
 import NcAppSidebarTab from '@nextcloud/vue/components/NcAppSidebarTab'
 import NcAvatar from '@nextcloud/vue/components/NcAvatar'
@@ -315,7 +315,7 @@ export default {
 			if (!iso) {
 				return ''
 			}
-			return new Date(iso).toLocaleString(undefined, {
+			return new Date(iso).toLocaleString(getCanonicalLocale(), {
 				year: 'numeric',
 				month: 'short',
 				day: 'numeric',

@@ -96,7 +96,7 @@
 </template>
 
 <script>
-import { t } from '@nextcloud/l10n'
+import { t, getCanonicalLocale } from '@nextcloud/l10n'
 import NcAvatar from '@nextcloud/vue/components/NcAvatar'
 import NcButton from '@nextcloud/vue/components/NcButton'
 import NcEmptyContent from '@nextcloud/vue/components/NcEmptyContent'
@@ -138,7 +138,7 @@ export default {
 		},
 
 		monthLabel() {
-			return this.firstDay.toLocaleDateString(undefined, { month: 'long', year: 'numeric' })
+			return this.firstDay.toLocaleDateString(getCanonicalLocale(), { month: 'long', year: 'numeric' })
 		},
 
 		days() {

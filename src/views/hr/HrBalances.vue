@@ -62,7 +62,7 @@
 									hideStatus /> {{ row.displayName }}
 							</div>
 						</td>
-						<td><span class="type"><span aria-hidden="true">{{ row.typeIcon }}</span> {{ row.typeLabel }}</span></td>
+						<td><span class="type"><span aria-hidden="true">{{ row.typeIcon }}</span> {{ t('absence', row.typeLabel) }}</span></td>
 						<td class="num">
 							{{ fmt(row.entitlement) }}
 						</td>
@@ -104,7 +104,7 @@
 
 		<NcModal v-if="editing" :name="t('absence', 'Edit entitlement')" @close="editing = null">
 			<div class="edit">
-				<h3>{{ editing.displayName }} · {{ editing.typeLabel }} · {{ year }}</h3>
+				<h3>{{ editing.displayName }} · {{ t('absence', editing.typeLabel) }} · {{ year }}</h3>
 				<label>{{ t('absence', 'Base days') }}</label>
 				<NcTextField v-model="form.baseDays" type="number" />
 				<label>{{ t('absence', 'Manual adjustment (+/−)') }}</label>
@@ -126,7 +126,7 @@
 
 <script>
 import { showError, showSuccess } from '@nextcloud/dialogs'
-import { t } from '@nextcloud/l10n'
+import { t, getCanonicalLocale } from '@nextcloud/l10n'
 import NcAvatar from '@nextcloud/vue/components/NcAvatar'
 import NcButton from '@nextcloud/vue/components/NcButton'
 import NcEmptyContent from '@nextcloud/vue/components/NcEmptyContent'
@@ -179,7 +179,7 @@ export default {
 	methods: {
 		t,
 		fmt(v) {
-			return v === null || v === undefined ? '—' : Number(v).toLocaleString(undefined, { maximumFractionDigits: 1 })
+			return v === null || v === undefined ? '—' : Number(v).toLocaleString(getCanonicalLocale(), { maximumFractionDigits: 1 })
 		},
 
 		async reload() {

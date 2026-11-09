@@ -197,9 +197,10 @@ class AbsenceWidget implements IAPIWidget, IAPIWidgetV2, IIconWidget {
 	}
 
 	private function range(LeaveRequest $r): string {
-		return $r->getStartDate() === $r->getEndDate()
-			? $r->getStartDate()
-			: $r->getStartDate() . ' – ' . $r->getEndDate();
+		$formatter = new \IntlDateFormatter($this->l->getLanguageCode(), \IntlDateFormatter::MEDIUM, \IntlDateFormatter::NONE, 'UTC');
+		$start = $formatter->format(new \DateTimeImmutable($r->getStartDate(), new \DateTimeZone('UTC')));
+		$end = $formatter->format(new \DateTimeImmutable($r->getEndDate(), new \DateTimeZone('UTC')));
+		return $r->getStartDate() === $r->getEndDate() ? $start : $start . ' – ' . $end;
 	}
 
 	private function statusLabel(string $status): string {
@@ -220,7 +221,7 @@ class AbsenceWidget implements IAPIWidget, IAPIWidgetV2, IIconWidget {
 	private function typeLabels(): array {
 		$labels = [];
 		foreach ($this->leaveTypeMapper->findAll() as $type) {
-			$labels[$type->getId()] = $type->getIcon() . ' ' . $type->getLabel();
+			$labels[$type->getId()] = $type->getIcon() . ' ' . $this->l->t($type->getLabel());
 		}
 		return $labels;
 	}
@@ -231,6 +232,8 @@ class AbsenceWidget implements IAPIWidget, IAPIWidgetV2, IIconWidget {
 	}
 
 	private function formatDays(float $v): string {
-		return rtrim(rtrim(number_format($v, 1, '.', ''), '0'), '.');
+		$formatter = new \NumberFormatter($this->l->getLanguageCode(), \NumberFormatter::DECIMAL);
+		$formatter->setAttribute(\NumberFormatter::MAX_FRACTION_DIGITS, 1);
+		return $formatter->format($v);
 	}
 }

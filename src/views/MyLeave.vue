@@ -73,7 +73,7 @@
 </template>
 
 <script>
-import { n, t } from '@nextcloud/l10n'
+import { n, t, getCanonicalLocale } from '@nextcloud/l10n'
 import NcButton from '@nextcloud/vue/components/NcButton'
 import NcEmptyContent from '@nextcloud/vue/components/NcEmptyContent'
 import Plus from 'vue-material-design-icons/Plus.vue'
@@ -184,7 +184,7 @@ export default {
 				addWorkingDaysByMonth(buckets, r.startDate, r.endDate, r.workingDays, this.year)
 			}
 			return buckets.map((value, month) => ({
-				label: new Date(this.year, month, 1).toLocaleDateString(undefined, { month: 'short' }),
+				label: new Date(this.year, month, 1).toLocaleDateString(getCanonicalLocale(), { month: 'short' }),
 				value: Math.round(value * 10) / 10,
 				...(color ? { color } : {}),
 			}))

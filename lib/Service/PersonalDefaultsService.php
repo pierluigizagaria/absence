@@ -146,7 +146,17 @@ class PersonalDefaultsService {
 				return $region;
 			}
 		}
-		return $this->countryFromPhone($uid);
+		$phoneCountry = $this->countryFromPhone($uid);
+		if ($phoneCountry !== null) {
+			return $phoneCountry;
+		}
+		// Organisation defaults are suggestions; explicit user overrides still win.
+		$defaultLocale = $this->config->getSystemValueString('default_locale', '');
+		if (preg_match('/[_-]([A-Za-z]{2})$/', $defaultLocale, $match)) {
+			return strtoupper($match[1]);
+		}
+		$phoneRegion = strtoupper($this->config->getSystemValueString('default_phone_region', ''));
+		return preg_match('/^[A-Z]{2}$/', $phoneRegion) ? $phoneRegion : null;
 	}
 
 	private function countryFromPhone(string $uid): ?string {

@@ -26,7 +26,7 @@
 		</svg>
 		<div class="ring__label">
 			<span class="ring__icon" aria-hidden="true">{{ row.typeIcon }}</span>
-			<span class="ring__name">{{ row.typeLabel }}</span>
+			<span class="ring__name">{{ t('absence', row.typeLabel) }}</span>
 		</div>
 		<div class="ring__meta">
 			<template v-if="row.entitlement !== null">
@@ -41,6 +41,7 @@
 </template>
 
 <script>
+import { getCanonicalLocale } from '@nextcloud/l10n'
 export default {
 	name: 'BalanceRing',
 	props: {
@@ -84,7 +85,7 @@ export default {
 		},
 
 		ariaLabel() {
-			return `${this.row.typeLabel}: ${this.remainingLabel} ${this.t('absence', 'days left')}`
+			return `${this.t('absence', this.row.typeLabel)}: ${this.remainingLabel} ${this.t('absence', 'days left')}`
 		},
 	},
 
@@ -120,7 +121,7 @@ export default {
 		},
 
 		format(v) {
-			return Number(v).toLocaleString(undefined, { maximumFractionDigits: 1 })
+			return Number(v).toLocaleString(getCanonicalLocale(), { maximumFractionDigits: 1 })
 		},
 	},
 }

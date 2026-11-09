@@ -156,7 +156,7 @@
 
 <script>
 import { showError } from '@nextcloud/dialogs'
-import { t } from '@nextcloud/l10n'
+import { t, getCanonicalLocale } from '@nextcloud/l10n'
 import { generateUrl } from '@nextcloud/router'
 import NcButton from '@nextcloud/vue/components/NcButton'
 import NcDateTimePickerNative from '@nextcloud/vue/components/NcDateTimePickerNative'
@@ -390,7 +390,7 @@ export default {
 			if (v === null || v === undefined) {
 				return '—'
 			}
-			return Number(v).toLocaleString(undefined, { maximumFractionDigits: 1 })
+			return Number(v).toLocaleString(getCanonicalLocale(), { maximumFractionDigits: 1 })
 		},
 
 		async initFromProps() {

@@ -12,6 +12,7 @@ use OCA\Absence\Db\LeaveRequest;
 use OCA\Absence\Db\LeaveTypeMapper;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\IUserManager;
+use OCP\IL10N;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 use Sabre\VObject\Component\VCalendar;
@@ -34,6 +35,7 @@ class CalendarService {
 		private LeaveTypeMapper $leaveTypeMapper,
 		private IUserManager $userManager,
 		private LoggerInterface $logger,
+		private IL10N $l,
 	) {
 	}
 
@@ -53,7 +55,7 @@ class CalendarService {
 					$backend,
 					'principals/users/' . $request->getEmployeeUid(),
 					self::PERSONAL_CALENDAR_URI,
-					'Absence',
+					$this->l->t('Absence'),
 					$request,
 					$this->personalTitle($request),
 				);
@@ -66,7 +68,7 @@ class CalendarService {
 					$backend,
 					self::SHARED_PRINCIPAL,
 					self::SHARED_CALENDAR_URI,
-					'Team absences',
+					$this->l->t('Team absences'),
 					$request,
 					$this->sharedTitle($request),
 				);
@@ -153,14 +155,14 @@ class CalendarService {
 		if ($this->config->getSharedCalendarVisibility() === ConfigService::VISIBILITY_REVEAL) {
 			return $name . ' — ' . $this->typeLabel($request);
 		}
-		return $name . ' — Absent';
+		return $name . ' — ' . $this->l->t('Absent');
 	}
 
 	private function typeLabel(LeaveRequest $request): string {
 		try {
-			return $this->leaveTypeMapper->find($request->getTypeId())->getLabel();
+			return $this->l->t($this->leaveTypeMapper->find($request->getTypeId())->getLabel());
 		} catch (DoesNotExistException) {
-			return 'Leave';
+			return $this->l->t('Leave');
 		}
 	}
 

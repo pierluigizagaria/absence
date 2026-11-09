@@ -17,6 +17,7 @@ use OCP\AppFramework\Http\Attribute\NoCSRFRequired;
 use OCP\AppFramework\Http\DataDownloadResponse;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\IRequest;
+use OCP\IL10N;
 
 class ExportController extends Controller {
 	public function __construct(
@@ -25,6 +26,7 @@ class ExportController extends Controller {
 		private ?string $userId,
 		private ExportService $service,
 		private PermissionService $permission,
+		private IL10N $l,
 	) {
 		parent::__construct($appName, $request);
 	}
@@ -33,7 +35,7 @@ class ExportController extends Controller {
 	#[NoCSRFRequired]
 	public function requests(string $from, string $to): DataResponse|DataDownloadResponse {
 		if (!$this->permission->isHr((string)$this->userId)) {
-			return new DataResponse(['message' => 'HR role required'], Http::STATUS_FORBIDDEN);
+			return new DataResponse(['message' => (string)$this->l->t('HR role required')], Http::STATUS_FORBIDDEN);
 		}
 		$export = $this->service->requestsCsv($from, $to);
 		return new DataDownloadResponse($export['content'], $export['filename'], 'text/csv');
@@ -43,7 +45,7 @@ class ExportController extends Controller {
 	#[NoCSRFRequired]
 	public function balances(?int $year = null): DataResponse|DataDownloadResponse {
 		if (!$this->permission->isHr((string)$this->userId)) {
-			return new DataResponse(['message' => 'HR role required'], Http::STATUS_FORBIDDEN);
+			return new DataResponse(['message' => (string)$this->l->t('HR role required')], Http::STATUS_FORBIDDEN);
 		}
 		$export = $this->service->balancesCsv($year ?? (int)date('Y'));
 		return new DataDownloadResponse($export['content'], $export['filename'], 'text/csv');

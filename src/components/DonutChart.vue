@@ -48,7 +48,7 @@
 </template>
 
 <script>
-import { t } from '@nextcloud/l10n'
+import { t, getCanonicalLocale } from '@nextcloud/l10n'
 
 export default {
 	name: 'DonutChart',
@@ -95,7 +95,7 @@ export default {
 
 	methods: {
 		t,
-		fmt(v) { return Number(v).toLocaleString(undefined, { maximumFractionDigits: 1 }) },
+		fmt(v) { return Number(v).toLocaleString(getCanonicalLocale(), { maximumFractionDigits: 1 }) },
 	},
 }
 </script>

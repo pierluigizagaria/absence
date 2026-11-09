@@ -1,3 +1,4 @@
+import { getCanonicalLocale } from '@nextcloud/l10n'
 /**
  * SPDX-FileCopyrightText: 2026 Nextcloud GmbH and Nextcloud contributors
  * SPDX-License-Identifier: AGPL-3.0-or-later
@@ -39,7 +40,10 @@ export async function makeHolidayChecker(country, region) {
 export async function listCountries() {
 	const { default: Holidays } = await import('date-holidays')
 	const map = new Holidays().getCountries()
-	return Object.keys(map).map((id) => ({ id, label: map[id] }))
+	const locale = getCanonicalLocale()
+	const names = new Intl.DisplayNames([locale], { type: 'region' })
+	return Object.keys(map).map((id) => ({ id, label: names.of(id) || map[id] }))
+		.sort((a, b) => a.label.localeCompare(b.label, locale))
 }
 
 /**

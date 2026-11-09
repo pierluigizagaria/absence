@@ -11,6 +11,7 @@ namespace OCA\Absence\Service;
 use OCA\Absence\Db\LeaveRequestMapper;
 use OCA\Absence\Db\LeaveTypeMapper;
 use OCP\IUserManager;
+use OCP\IL10N;
 
 /**
  * CSV export for HR (spec §13). XLSX is offered as a documented CSV fallback so the
@@ -24,6 +25,7 @@ class ExportService {
 		private LeaveTypeMapper $leaveTypeMapper,
 		private ReportService $reportService,
 		private IUserManager $userManager,
+		private IL10N $l,
 	) {
 	}
 
@@ -33,21 +35,21 @@ class ExportService {
 	public function requestsCsv(string $from, string $to): array {
 		[$from, $to] = $this->assertValidRange($from, $to);
 		$types = $this->typeLabels();
-		$rows = [[
+		$rows = [array_map(fn (string $header): string => (string)$this->l->t($header), [
 			'ID', 'Employee', 'Manager', 'Type', 'Start', 'End', 'Working days', 'Status', 'Decided by', 'Decided at',
-		]];
+		])];
 		foreach ($this->requestMapper->findAllInRange($from, $to) as $r) {
 			$rows[] = [
 				(string)$r->getId(),
 				$this->displayName($r->getEmployeeUid()),
 				$r->getManagerUid() !== null ? $this->displayName($r->getManagerUid()) : '',
 				$types[$r->getTypeId()] ?? (string)$r->getTypeId(),
-				$r->getStartDate(),
-				$r->getEndDate(),
-				(string)$r->getWorkingDays(),
-				$r->getStatus(),
+				$this->formatDate($r->getStartDate()),
+				$this->formatDate($r->getEndDate()),
+				$this->formatNumber($r->getWorkingDays()),
+				$this->statusLabel($r->getStatus()),
 				$r->getDecidedBy() !== null ? $this->displayName($r->getDecidedBy()) : '',
-				$r->getDecidedAt()?->format('Y-m-d H:i') ?? '',
+				$r->getDecidedAt()?->format($this->isItalian() ? 'd/m/Y H:i' : 'Y-m-d H:i') ?? '',
 			];
 		}
 		return ['filename' => "absence-requests-{$from}_{$to}.csv", 'content' => $this->toCsv($rows)];
@@ -58,22 +60,22 @@ class ExportService {
 	 */
 	public function balancesCsv(int $year): array {
 		$report = $this->reportService->balancesReport($year);
-		$rows = [[
+		$rows = [array_map(fn (string $header): string => (string)$this->l->t($header), [
 			'Employee', 'Year', 'Type', 'Entitlement', 'Base', 'Carry-over', 'Adjustment', 'Used', 'Pending', 'Remaining', 'Available',
-		]];
+		])];
 		foreach ($report as $entry) {
 			$rows[] = [
 				$entry['displayName'],
 				(string)$entry['year'],
-				$entry['typeLabel'],
-				(string)($entry['entitlement'] ?? ''),
-				(string)$entry['baseDays'],
-				(string)$entry['carryOverDays'],
-				(string)$entry['manualAdjustment'],
-				(string)$entry['used'],
-				(string)$entry['pending'],
-				(string)($entry['remaining'] ?? ''),
-				(string)($entry['available'] ?? ''),
+				$this->l->t($entry['typeLabel']),
+				$this->formatNumber($entry['entitlement'] ?? ''),
+				$this->formatNumber($entry['baseDays']),
+				$this->formatNumber($entry['carryOverDays']),
+				$this->formatNumber($entry['manualAdjustment']),
+				$this->formatNumber($entry['used']),
+				$this->formatNumber($entry['pending']),
+				$this->formatNumber($entry['remaining'] ?? ''),
+				$this->formatNumber($entry['available'] ?? ''),
 			];
 		}
 		return ['filename' => "absence-balances-{$year}.csv", 'content' => $this->toCsv($rows)];
@@ -89,7 +91,7 @@ class ExportService {
 		foreach ($rows as $row) {
 			// escape: '' disables PHP's legacy backslash escaping in favour of pure
 			// RFC-4180 quoting (and silences the 8.4 deprecation of the default).
-			fputcsv($handle, array_map([$this, 'sanitizeCell'], $row), ',', '"', '');
+			fputcsv($handle, array_map([$this, 'sanitizeCell'], $row), $this->isItalian() ? ';' : ',', '"', '');
 		}
 		rewind($handle);
 		$content = stream_get_contents($handle);
@@ -107,7 +109,7 @@ class ExportService {
 	private function sanitizeCell(string $value): string {
 		// Plain numbers are never formulas: a negative adjustment like "-2" must stay
 		// numeric instead of being exported as the text "'-2".
-		if (is_numeric($value)) {
+		if (is_numeric($value) || ($this->isItalian() && preg_match('/^-?\d+,\d+$/D', $value))) {
 			return $value;
 		}
 		if ($value !== '' && in_array($value[0], ['=', '+', '-', '@', "\t", "\r"], true)) {
@@ -122,7 +124,7 @@ class ExportService {
 	private function typeLabels(): array {
 		$labels = [];
 		foreach ($this->leaveTypeMapper->findAll() as $type) {
-			$labels[$type->getId()] = $type->getLabel();
+			$labels[$type->getId()] = $this->l->t($type->getLabel());
 		}
 		return $labels;
 	}
@@ -130,5 +132,29 @@ class ExportService {
 	private function displayName(string $uid): string {
 		$user = $this->userManager->get($uid);
 		return $user !== null ? $user->getDisplayName() : $uid;
+	}
+
+	private function isItalian(): bool {
+		return str_starts_with($this->l->getLanguageCode(), 'it');
+	}
+
+	private function formatDate(string $iso): string {
+		return $this->isItalian() ? (new \DateTimeImmutable($iso))->format('d/m/Y') : $iso;
+	}
+
+	private function formatNumber(mixed $value): string {
+		return $this->isItalian() ? str_replace('.', ',', (string)$value) : (string)$value;
+	}
+
+	private function statusLabel(string $status): string {
+		if (!$this->isItalian()) {
+			return $status;
+		}
+		$label = match ($status) {
+			'PENDING' => 'Pending', 'ESCALATED' => 'With HR', 'APPROVED' => 'Approved',
+			'REJECTED' => 'Declined', 'CANCELLED' => 'Cancelled', 'WITHDRAWAL_PENDING' => 'Withdrawal pending',
+			default => $status,
+		};
+		return (string)$this->l->t($label);
 	}
 }

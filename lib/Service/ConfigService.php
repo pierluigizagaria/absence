@@ -181,7 +181,7 @@ class ConfigService {
 				$this->appConfig->setValueString(self::APP_ID, $key, $gid);
 				break;
 			default:
-				throw new ValidationException('Unknown setting: ' . $key);
+				throw new ValidationException('Unknown setting: %s', parameters: [$key]);
 		}
 	}
 }

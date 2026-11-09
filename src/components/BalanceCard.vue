@@ -42,7 +42,7 @@
 </template>
 
 <script>
-import { t } from '@nextcloud/l10n'
+import { t, getCanonicalLocale } from '@nextcloud/l10n'
 import BalanceRing from './BalanceRing.vue'
 
 export default {
@@ -55,7 +55,7 @@ export default {
 	methods: {
 		t,
 		format(v) {
-			return Number(v).toLocaleString(undefined, { maximumFractionDigits: 1 })
+			return Number(v).toLocaleString(getCanonicalLocale(), { maximumFractionDigits: 1 })
 		},
 
 		signed(v) {

@@ -748,7 +748,7 @@ class RequestService {
 	private function normaliseDate(string $date): string {
 		$dt = \DateTimeImmutable::createFromFormat('!Y-m-d', $date);
 		if ($dt === false) {
-			throw new ValidationException('Invalid date: ' . $date);
+			throw new ValidationException('Invalid date: %s', parameters: [$date]);
 		}
 		return $dt->format('Y-m-d');
 	}

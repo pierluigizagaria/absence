@@ -152,10 +152,10 @@ class LeaveTypeController extends Controller {
 	 */
 	private function assertValidText(string $field, string $value, int $maxLength, bool $required): void {
 		if ($required && trim($value) === '') {
-			throw new ValidationException("The $field cannot be empty.");
+			throw new ValidationException('The %s cannot be empty.', parameters: [$field]);
 		}
 		if (mb_strlen($value) > $maxLength) {
-			throw new ValidationException("The $field is too long (max $maxLength characters).");
+			throw new ValidationException('The %1$s is too long (max %2$s characters).', parameters: [$field, $maxLength]);
 		}
 	}
 

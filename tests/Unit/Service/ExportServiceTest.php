@@ -16,6 +16,7 @@ use OCA\Absence\Service\ExportService;
 use OCA\Absence\Service\ReportService;
 use OCP\IUser;
 use OCP\IUserManager;
+use OCP\IL10N;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -32,11 +33,15 @@ class ExportServiceTest extends TestCase {
 		$this->leaveTypeMapper = $this->createMock(LeaveTypeMapper::class);
 		$this->reportService = $this->createMock(ReportService::class);
 		$this->userManager = $this->createMock(IUserManager::class);
+		$l = $this->createMock(IL10N::class);
+		$l->method('getLanguageCode')->willReturn('en');
+		$l->method('t')->willReturnCallback(static fn (string $text) => $text);
 		$this->service = new ExportService(
 			$this->requestMapper,
 			$this->leaveTypeMapper,
 			$this->reportService,
 			$this->userManager,
+			$l,
 		);
 	}
 

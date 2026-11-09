@@ -24,9 +24,13 @@ function initialSession() {
 /**
  *
  */
+function localizeType(type) {
+	return { ...type, label: t('absence', type.label) }
+}
+
 function initialLeaveTypes() {
 	try {
-		return loadState('absence', 'leaveTypes') || []
+		return (loadState('absence', 'leaveTypes') || []).map(localizeType)
 	} catch {
 		return []
 	}
@@ -85,7 +89,7 @@ export const store = reactive({
 	},
 
 	async loadLeaveTypes() {
-		this.leaveTypes = await api.listLeaveTypes(false)
+		this.leaveTypes = (await api.listLeaveTypes(false)).map(localizeType)
 	},
 
 	async loadRequests(params) {

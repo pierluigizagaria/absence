@@ -1,3 +1,4 @@
+import { getCanonicalLocale } from '@nextcloud/l10n'
 /**
  * SPDX-FileCopyrightText: 2026 Nextcloud GmbH and Nextcloud contributors
  * SPDX-License-Identifier: AGPL-3.0-or-later
@@ -70,7 +71,7 @@ export function formatDate(iso) {
 	if (!iso) {
 		return ''
 	}
-	return new Date(iso + 'T00:00:00').toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' })
+	return new Date(iso + 'T00:00:00').toLocaleDateString(getCanonicalLocale(), { year: 'numeric', month: 'short', day: 'numeric' })
 }
 
 /**

@@ -56,7 +56,7 @@
 </template>
 
 <script>
-import { t } from '@nextcloud/l10n'
+import { t, getCanonicalLocale } from '@nextcloud/l10n'
 import NcDateTimePickerNative from '@nextcloud/vue/components/NcDateTimePickerNative'
 import NcEmptyContent from '@nextcloud/vue/components/NcEmptyContent'
 import ChartLine from 'vue-material-design-icons/ChartLine.vue'
@@ -89,7 +89,7 @@ export default {
 
 		typeData() {
 			return this.trends.byType.map((tt) => ({
-				label: `${tt.typeIcon || ''} ${tt.typeLabel}`.trim(),
+				label: `${tt.typeIcon || ''} ${this.t('absence', tt.typeLabel)}`.trim(),
 				value: tt.days,
 				color: tt.typeColor,
 			}))
@@ -112,7 +112,7 @@ export default {
 
 	methods: {
 		t,
-		fmt(v) { return Number(v).toLocaleString(undefined, { maximumFractionDigits: 1 }) },
+		fmt(v) { return Number(v).toLocaleString(getCanonicalLocale(), { maximumFractionDigits: 1 }) },
 		async reload() {
 			this.loading = true
 			try {

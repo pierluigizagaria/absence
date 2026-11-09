@@ -40,6 +40,7 @@
 </template>
 
 <script>
+import { getCanonicalLocale } from '@nextcloud/l10n'
 export default {
 	name: 'BarChart',
 	props: {
@@ -85,7 +86,7 @@ export default {
 	},
 
 	methods: {
-		fmt(v) { return Number(v).toLocaleString(undefined, { maximumFractionDigits: 1 }) },
+		fmt(v) { return Number(v).toLocaleString(getCanonicalLocale(), { maximumFractionDigits: 1 }) },
 	},
 }
 </script>
