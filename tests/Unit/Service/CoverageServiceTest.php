@@ -88,4 +88,29 @@ class CoverageServiceTest extends TestCase {
 		$this->expectException(ValidationException::class);
 		$this->service->getCoverage(['viewer'], '2026-13-99', '2026-01-31', null, 'viewer');
 	}
+	public function testPrivateScopeExcludesColleaguesWithTheSameManager(): void {
+		$this->config->method('isPrivateAbsencesEnabled')->willReturn(true);
+		$this->managerResolver->method('getDirectReports')->willReturn([]);
+		$this->managerResolver->expects($this->never())->method('getPeers');
+		self::assertSame(['viewer'], $this->service->resolveScopeUids('viewer', 'team'));
+	}
+
+	public function testPrivateCoverageFiltersUnauthorizedEventsAndCounts(): void {
+		$this->config->method('isPrivateAbsencesEnabled')->willReturn(true);
+		$this->permission->method('isHr')->willReturn(false);
+		$this->managerResolver->method('getDirectReports')->willReturn([]);
+		$this->requestMapper->method('findForEmployeesInRange')->willReturn([
+			$this->request(1, 'viewer'), $this->request(2, 'colleague'),
+		]);
+		$result = $this->service->getCoverage(['viewer', 'colleague'], '2026-01-01', '2026-01-31', null, 'viewer');
+		self::assertSame(['viewer'], array_column($result['events'], 'employeeUid'));
+		self::assertSame(1, $result['maxConcurrent']);
+	}
+
+	public function testCompanyScopeRequiresHrPermission(): void {
+		$this->permission->method('assertHr')->willThrowException(new \OCA\Absence\Exception\ForbiddenException('HR role required'));
+		$this->expectException(\OCA\Absence\Exception\ForbiddenException::class);
+		$this->service->resolveScopeUids('viewer', 'company');
+	}
+
 }

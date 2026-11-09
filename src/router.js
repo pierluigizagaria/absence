@@ -5,6 +5,7 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import Approvals from './views/Approvals.vue'
 import HrBalances from './views/hr/HrBalances.vue'
+import HrConfiguration from './views/hr/HrConfiguration.vue'
 import HrExports from './views/hr/HrExports.vue'
 import HrStatistics from './views/hr/HrStatistics.vue'
 import HrWhosOff from './views/hr/HrWhosOff.vue'
@@ -16,6 +17,7 @@ const routes = [
 	{ path: '/my', name: 'my', component: MyLeave },
 	{ path: '/approvals', name: 'approvals', component: Approvals },
 	{ path: '/team', name: 'team', component: Team },
+	{ path: '/hr/configuration', name: 'hr-configuration', component: HrConfiguration },
 	{ path: '/hr/balances', name: 'hr-balances', component: HrBalances },
 	{ path: '/hr/statistics', name: 'hr-statistics', component: HrStatistics },
 	{ path: '/hr/whos-off', name: 'hr-whos-off', component: HrWhosOff },

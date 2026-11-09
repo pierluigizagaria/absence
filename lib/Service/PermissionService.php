@@ -26,6 +26,10 @@ class PermissionService {
 	) {
 	}
 
+	public function isAdmin(string $uid): bool {
+		return $this->groupManager->isAdmin($uid);
+	}
+
 	public function isHr(string $uid): bool {
 		return $this->groupManager->isInGroup($uid, $this->config->getHrGroup());
 	}

@@ -25,6 +25,8 @@ use OCP\Config\ValueType;
 class ConfigLexicon implements ILexicon {
 	// Admin settings (§12).
 	public const KEY_HR_GROUP = 'hr_group';
+	public const KEY_PRIVATE_ABSENCES = 'private_absences';
+	public const KEY_REPLACEMENTS_ENABLED = 'replacements_enabled';
 	public const KEY_DEFAULT_ENTITLEMENT = 'default_entitlement';
 	public const KEY_ESCALATION_WINDOW = 'escalation_window_days';
 	public const KEY_REMINDER_LEAD = 'reminder_lead_days';
@@ -52,6 +54,8 @@ class ConfigLexicon implements ILexicon {
 	#[\Override]
 	public function getAppConfigs(): array {
 		return [
+			new Entry(self::KEY_PRIVATE_ABSENCES, ValueType::BOOL, true, 'Employees see only their own absences'),
+			new Entry(self::KEY_REPLACEMENTS_ENABLED, ValueType::BOOL, false, 'Enable optional replacement nominations'),
 			new Entry(self::KEY_HR_GROUP, ValueType::STRING, 'hr',
 				'Group whose members have the HR role'),
 			new Entry(self::KEY_DEFAULT_ENTITLEMENT, ValueType::FLOAT, 25.0,

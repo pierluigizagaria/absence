@@ -39,6 +39,14 @@ class ConfigService {
 	) {
 	}
 
+	public function isPrivateAbsencesEnabled(): bool {
+		return $this->appConfig->getValueBool(self::APP_ID, ConfigLexicon::KEY_PRIVATE_ABSENCES);
+	}
+
+	public function isReplacementsEnabled(): bool {
+		return !$this->isPrivateAbsencesEnabled() && $this->appConfig->getValueBool(self::APP_ID, ConfigLexicon::KEY_REPLACEMENTS_ENABLED);
+	}
+
 	public function getHrGroup(): string {
 		return $this->appConfig->getValueString(self::APP_ID, ConfigLexicon::KEY_HR_GROUP);
 	}
@@ -77,7 +85,7 @@ class ConfigService {
 	}
 
 	public function isCalDavSharedEnabled(): bool {
-		return $this->appConfig->getValueBool(self::APP_ID, ConfigLexicon::KEY_CALDAV_SHARED);
+		return !$this->isPrivateAbsencesEnabled() && $this->appConfig->getValueBool(self::APP_ID, ConfigLexicon::KEY_CALDAV_SHARED);
 	}
 
 	/** @return string self::VISIBILITY_NEUTRAL|self::VISIBILITY_REVEAL */
@@ -92,6 +100,8 @@ class ConfigService {
 	 */
 	public function getAdminConfig(): array {
 		return [
+			ConfigLexicon::KEY_PRIVATE_ABSENCES => $this->isPrivateAbsencesEnabled(),
+			ConfigLexicon::KEY_REPLACEMENTS_ENABLED => $this->isReplacementsEnabled(),
 			ConfigLexicon::KEY_HR_GROUP => $this->getHrGroup(),
 			ConfigLexicon::KEY_DEFAULT_ENTITLEMENT => $this->getDefaultEntitlement(),
 			ConfigLexicon::KEY_ESCALATION_WINDOW => $this->getEscalationWindowDays(),
@@ -156,6 +166,8 @@ class ConfigService {
 				}
 				$this->appConfig->setValueFloat(self::APP_ID, $key, $float);
 				break;
+			case ConfigLexicon::KEY_PRIVATE_ABSENCES:
+			case ConfigLexicon::KEY_REPLACEMENTS_ENABLED:
 			case ConfigLexicon::KEY_CALDAV_PERSONAL:
 			case ConfigLexicon::KEY_CALDAV_SHARED:
 				$this->appConfig->setValueBool(self::APP_ID, $key, (bool)$value);

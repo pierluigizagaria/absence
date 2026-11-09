@@ -40,6 +40,7 @@ class NotificationService {
 		private IURLGenerator $urlGenerator,
 		private IFactory $l10nFactory,
 		private LoggerInterface $logger,
+		private ConfigService $config,
 	) {
 	}
 
@@ -76,6 +77,9 @@ class NotificationService {
 
 	/** Tell the nominated replacement they now cover for the employee (§5.1). */
 	public function notifyReplacementAssigned(LeaveRequest $request): void {
+		if (!$this->config->isReplacementsEnabled()) {
+			return;
+		}
 		$uid = $request->getReplacementUid();
 		if ($uid !== null && $uid !== '') {
 			$this->send($uid, self::SUBJECT_REPLACEMENT_ASSIGNED, $request, false);
@@ -84,6 +88,9 @@ class NotificationService {
 
 	/** Tell the replacement the leave was cancelled and they no longer need to cover. */
 	public function notifyReplacementCancelled(LeaveRequest $request): void {
+		if (!$this->config->isReplacementsEnabled()) {
+			return;
+		}
 		$uid = $request->getReplacementUid();
 		if ($uid !== null && $uid !== '') {
 			$this->send($uid, self::SUBJECT_REPLACEMENT_CANCELLED, $request, false);

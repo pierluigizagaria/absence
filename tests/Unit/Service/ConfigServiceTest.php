@@ -115,4 +115,11 @@ class ConfigServiceTest extends TestCase {
 		$this->expectException(ValidationException::class);
 		$this->service->setAdminValue(ConfigLexicon::KEY_HR_GROUP, '');
 	}
+	public function testPrivateModeBlocksReplacementAndSharedCalendar(): void {
+		$this->appConfig->method('getValueBool')->willReturn(true);
+		self::assertTrue($this->service->isPrivateAbsencesEnabled());
+		self::assertFalse($this->service->isReplacementsEnabled());
+		self::assertFalse($this->service->isCalDavSharedEnabled());
+	}
+
 }

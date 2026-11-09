@@ -33,6 +33,7 @@
 				</NcAppNavigationItem>
 
 				<NcAppNavigationItem
+					v-if="session.isHr || session.isManager || !session.privateAbsences"
 					:name="t('absence', 'Team')"
 					:to="{ name: 'team' }">
 					<template #icon>
@@ -42,6 +43,7 @@
 
 				<template v-if="session.isHr">
 					<NcAppNavigationCaption :name="t('absence', 'HR')" />
+					<NcAppNavigationItem :name="t('absence', 'Configuration')" :to="{ name: 'hr-configuration' }" />
 					<NcAppNavigationItem :name="t('absence', 'Record absence')" @click="openRecord">
 						<template #icon>
 							<ClipboardPlusOutline :size="20" />

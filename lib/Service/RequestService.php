@@ -57,6 +57,9 @@ class RequestService {
 	 * @throws ValidationException
 	 */
 	private function resolveReplacement(string $employeeUid, LeaveType $type, ?string $replacementUid): ?string {
+		if (!$this->config->isReplacementsEnabled()) {
+			return null;
+		}
 		$replacementUid = trim((string)$replacementUid);
 		if ($replacementUid === '') {
 			if (!$type->getRequiresReplacement()) {
@@ -139,6 +142,11 @@ class RequestService {
 	 * @return array<string,mixed>
 	 */
 	private function withReplacementName(array $data, LeaveRequest $request): array {
+		if (!$this->config->isReplacementsEnabled()) {
+			$data['replacementUid'] = null;
+			$data['replacementName'] = null;
+			return $data;
+		}
 		if ($request->getReplacementUid() !== null) {
 			$user = $this->userManager->get($request->getReplacementUid());
 			$data['replacementName'] = $user !== null ? $user->getDisplayName() : $request->getReplacementUid();
@@ -170,7 +178,7 @@ class RequestService {
 
 		if ($scope === 'reports' || $scope === 'approvals') {
 			$query['managerUid'] = $actorUid;
-			return $this->requestMapper->findFiltered($query, $limit, $offset);
+			return array_values(array_filter($this->requestMapper->findFiltered($query, $limit, $offset), fn (LeaveRequest $request): bool => $this->permission->canView($actorUid, $request)));
 		}
 		if ($scope === 'hr') {
 			$this->permission->assertHr($actorUid);

@@ -24,6 +24,7 @@ class SessionService {
 		private ManagerResolver $managerResolver,
 		private LeaveRequestMapper $requestMapper,
 		private PersonalDefaultsService $personalDefaults,
+		private ConfigService $config,
 	) {
 	}
 
@@ -49,6 +50,9 @@ class SessionService {
 			'holidayRegion' => $defaults['holidayRegion'],
 			'displayName' => $user->getDisplayName(),
 			'isHr' => $isHr,
+			'isAdmin' => $this->permission->isAdmin($uid),
+			'privateAbsences' => $this->config->isPrivateAbsencesEnabled(),
+			'replacementsEnabled' => $this->config->isReplacementsEnabled(),
 			'isManager' => $isManager,
 			'managerUid' => $managerUid,
 			'managerName' => $managerUid !== null ? $this->displayName($managerUid) : null,

@@ -112,6 +112,8 @@ class AdminDeclarativeSettingsTest extends TestCase {
 	/** @return array<string,mixed> Shape of ConfigService::getAdminConfig(). */
 	private static function adminConfigFixture(): array {
 		return [
+			ConfigLexicon::KEY_PRIVATE_ABSENCES => true,
+			ConfigLexicon::KEY_REPLACEMENTS_ENABLED => false,
 			ConfigLexicon::KEY_HR_GROUP => 'hr',
 			ConfigLexicon::KEY_DEFAULT_ENTITLEMENT => 25.0,
 			ConfigLexicon::KEY_ESCALATION_WINDOW => 3,

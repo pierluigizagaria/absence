@@ -1,14 +1,14 @@
 # Absence: adattamento italiano per un contesto lavorativo
 
 Ramo locale basato sul tag ufficiale `v1.0.6`, commit
-`db4e1d068ccbbabe240b8117a30dcadb463e147a`. La versione `1.0.8` di questo ramo
+`db4e1d068ccbbabe240b8117a30dcadb463e147a`. La versione `1.0.9` di questo ramo
 identifica una build personalizzata, non una release ufficiale Nextcloud.
 
 - Interfaccia senza emoticon; icona di navigazione a calendario monocromatico.
-- Campo sostituto visibile e facoltativo nel profilo italiano; selezione valida e rimozione testate.
-- Modello con 16 tipologie principali in `resources/italian-leave-types.json`.
+- Campo sostituto disattivato per impostazione predefinita; configurabile dalle impostazioni generali, ma bloccato in modalità privata.
+- Modello con 3 tipologie principali in `resources/italian-leave-types.json`.
 - Politica di riporto con tre scelte esplicite, compatibili con il modulo impostazioni Nextcloud 35.
-- Catalogo italiano: 342 voci, inclusi plurali, notifiche ed errori applicativi.
+- Catalogo italiano: 366 voci, inclusi plurali, notifiche ed errori applicativi.
 - Terminologia: ferie, permessi, richieste di assenza, responsabile e ufficio del personale.
 - Date e numeri dell'interfaccia seguono la lingua/locale impostata in Nextcloud.
 - CSV italiano: UTF-8 con BOM, separatore `;`, virgola decimale, date `gg/mm/aaaa`,
@@ -40,3 +40,27 @@ Absence possono sostituire questa personalizzazione: conservare la patch Git,
 verificare le differenze e ripetere le prove su una copia prima di aggiornare.
 Il repository contiene solo codice e traduzioni: credenziali, dati dell'azienda,
 backup e configurazioni dell'istanza devono restare fuori da Git.
+
+## Configurazione e permessi
+
+Da **Assenze → Configurazione**, HR può aggiungere, rinominare, attivare o
+ disattivare le tipologie e scegliere approvazione, richiesta da parte del
+ dipendente, saldo in giorni e motivazione obbligatoria. Le tipologie disattivate
+ restano disponibili nello storico. Le impostazioni generali sono riservate agli
+ amministratori Nextcloud.
+
+La configurazione iniziale comprende **Ferie, Permesso, Malattia**. Tutte richiedono
+ approvazione; il solo saldo Ferie è attivo inizialmente. Gli importi e i diritti
+ contrattuali restano da configurare dall'organizzazione.
+
+La modalità privata è attiva per impostazione predefinita: dipendenti solo sulle
+ proprie assenze; responsabili sui propri collaboratori; HR su tutta l'organizzazione.
+ I controlli si applicano alle API, ai conteggi di copertura e alle richieste dirette,
+ non solo ai menu. La vecchia opzione di calendario “neutrale” nascondeva solo il
+ tipo di assenza; la modalità privata filtra anche identità e date dei colleghi.
+ Il calendario condiviso e le notifiche ai sostituti sono bloccati in modalità privata.
+ La sincronizzazione personale non scrive in calendari già condivisi o pubblicati.
+
+Verifica su copia isolata: due colleghi con lo stesso responsabile, richieste
+ dirette, calendario, copertura, statistiche, saldi, esportazioni e modifica delle
+ tipologie. Test unitari: 45 test, 182 asserzioni, superati su PHP 8.5.12.

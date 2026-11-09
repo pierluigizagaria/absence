@@ -36,7 +36,8 @@ class CoverageService {
 	 * @return string[]
 	 */
 	public function resolveScopeUids(string $actorUid, string $scope): array {
-		if ($scope === self::SCOPE_COMPANY && $this->permission->isHr($actorUid)) {
+		if ($scope === self::SCOPE_COMPANY) {
+			$this->permission->assertHr($actorUid);
 			$uids = [];
 			$this->userManager->callForAllUsers(static function ($user) use (&$uids): void {
 				$uids[] = $user->getUID();
@@ -47,6 +48,9 @@ class CoverageService {
 		$reports = $this->managerResolver->getDirectReports($actorUid);
 		if ($reports !== []) {
 			return array_values(array_unique([...$reports, $actorUid]));
+		}
+		if ($this->config->isPrivateAbsencesEnabled()) {
+			return [$actorUid];
 		}
 		return array_values(array_unique([...$this->managerResolver->getPeers($actorUid), $actorUid]));
 	}
@@ -66,6 +70,14 @@ class CoverageService {
 	 */
 	public function getCoverage(array $employeeUids, string $from, string $to, ?int $excludeRequestId = null, ?string $viewerUid = null): array {
 		[$from, $to] = $this->assertValidRange($from, $to);
+		if ($this->config->isPrivateAbsencesEnabled()) {
+			if ($viewerUid === null) {
+				$employeeUids = [];
+			} elseif (!$this->permission->isHr($viewerUid)) {
+				$allowed = [$viewerUid, ...$this->managerResolver->getDirectReports($viewerUid)];
+				$employeeUids = array_values(array_intersect($employeeUids, $allowed));
+			}
+		}
 		$revealTypes = $this->config->getSharedCalendarVisibility() === ConfigService::VISIBILITY_REVEAL;
 		$statuses = [LeaveRequest::STATUS_APPROVED, LeaveRequest::STATUS_PENDING, LeaveRequest::STATUS_ESCALATED, LeaveRequest::STATUS_WITHDRAWAL_PENDING];
 		$requests = $this->requestMapper->findForEmployeesInRange($employeeUids, $from, $to, $statuses);
@@ -73,6 +85,9 @@ class CoverageService {
 		$events = [];
 		$byDate = [];
 		foreach ($requests as $request) {
+			if ($this->config->isPrivateAbsencesEnabled() && !in_array($request->getEmployeeUid(), $employeeUids, true)) {
+				continue;
+			}
 			if ($excludeRequestId !== null && $request->getId() === $excludeRequestId) {
 				continue;
 			}

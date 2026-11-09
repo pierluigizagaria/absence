@@ -109,6 +109,19 @@ class CalendarService {
 		if ($calendarId === null) {
 			return null;
 		}
+		if ($this->config->isPrivateAbsencesEnabled()) {
+			// Never add absence data to a calendar already shared or published.
+			$qb = \OCP\Server::get(\OCP\IDBConnection::class)->getQueryBuilder();
+			$qb->select($qb->func()->count('*'))->from('dav_shares')
+				->where($qb->expr()->eq('resourceid', $qb->createNamedParameter($calendarId)))
+				->andWhere($qb->expr()->eq('type', $qb->createNamedParameter('calendar')));
+			$result = $qb->executeQuery();
+			$shared = (int)$result->fetchOne() > 0;
+			$result->closeCursor();
+			if ($shared) {
+				return null;
+			}
+		}
 		$objectUri = 'absence-' . $request->getId() . '-' . substr(md5($principalUri), 0, 8) . '.ics';
 		$ics = $this->buildIcs($request, $objectUri, $title);
 		$backend->createCalendarObject($calendarId, $objectUri, $ics);

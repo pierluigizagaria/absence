@@ -58,6 +58,7 @@ class RequestServiceTest extends TestCase {
 		$this->notifications = $this->createMock(NotificationService::class);
 		$this->activity = $this->createMock(ActivityPublisher::class);
 		$this->config = $this->createMock(ConfigService::class);
+		$this->config->method('isReplacementsEnabled')->willReturn(true);
 		$this->userManager = $this->createMock(IUserManager::class);
 		$this->logger = $this->createMock(LoggerInterface::class);
 		$this->service = new RequestService(

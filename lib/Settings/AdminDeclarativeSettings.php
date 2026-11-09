@@ -45,6 +45,8 @@ class AdminDeclarativeSettings implements IDeclarativeSettingsFormWithHandlers {
 			'title' => $this->l->t('Absence'),
 			'description' => $this->l->t('Configure the vacation approval workflow.'),
 			'fields' => [
+				['id' => ConfigLexicon::KEY_PRIVATE_ABSENCES, 'title' => $this->l->t('Employee privacy'), 'label' => $this->l->t('Employees see only their own absences'), 'description' => $this->l->t('HR and assigned managers retain access for approvals. Shared absence calendars are disabled.'), 'type' => DeclarativeSettingsTypes::CHECKBOX, 'default' => true],
+				['id' => ConfigLexicon::KEY_REPLACEMENTS_ENABLED, 'title' => $this->l->t('Replacement field'), 'label' => $this->l->t('Show the optional replacement field'), 'description' => $this->l->t('When disabled, replacements are not recorded or notified. Existing history is retained. Unavailable while employee privacy is enabled.'), 'type' => DeclarativeSettingsTypes::CHECKBOX, 'default' => false],
 				[
 					'id' => ConfigLexicon::KEY_HR_GROUP,
 					'title' => $this->l->t('HR group'),

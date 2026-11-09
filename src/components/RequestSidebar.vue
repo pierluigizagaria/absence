@@ -27,7 +27,7 @@
 					<dd>{{ rangeLabel }}</dd>
 					<dt>{{ t('absence', 'Working days') }}</dt>
 					<dd>{{ detail.workingDays }}</dd>
-					<template v-if="detail.replacementUid">
+					<template v-if="store.session.replacementsEnabled && detail.replacementUid">
 						<dt>{{ t('absence', 'Replacement') }}</dt>
 						<dd class="facts__decided">
 							<NcAvatar :user="detail.replacementUid" :size="20" hideStatus />
@@ -111,7 +111,7 @@
 			<template #icon>
 				<AccountGroup :size="20" />
 			</template>
-			<CoveragePanel :coverage="detail.coverage" />
+			<CoveragePanel v-if="store.session.isHr || store.session.isManager || !store.session.privateAbsences" :coverage="detail.coverage" />
 		</NcAppSidebarTab>
 
 		<NcAppSidebarTab id="comments" :name="t('absence', 'Comments')" :order="3">
@@ -231,6 +231,7 @@ export default {
 	emits: ['close', 'edit', 'changed'],
 	data() {
 		return {
+			store,
 			detail: null,
 			busy: false,
 			rejecting: false,

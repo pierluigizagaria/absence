@@ -8,21 +8,7 @@
   },
   {
     "key": "rol",
-    "label": "Permesso retribuito (ROL)",
-    "countsAgainstBalance": false,
-    "requiresReplacement": false,
-    "icon": ""
-  },
-  {
-    "key": "ex_holidays",
-    "label": "Permesso ex festività",
-    "countsAgainstBalance": false,
-    "requiresReplacement": false,
-    "icon": ""
-  },
-  {
-    "key": "unpaid",
-    "label": "Permesso non retribuito",
+    "label": "Permesso",
     "countsAgainstBalance": false,
     "requiresReplacement": false,
     "icon": ""
@@ -30,83 +16,6 @@
   {
     "key": "sick",
     "label": "Malattia",
-    "countsAgainstBalance": false,
-    "requiresReplacement": false,
-    "icon": ""
-  },
-  {
-    "key": "work_injury",
-    "label": "Infortunio",
-    "countsAgainstBalance": false,
-    "requiresReplacement": false,
-    "icon": ""
-  },
-  {
-    "key": "maternity",
-    "label": "Congedo di maternità",
-    "countsAgainstBalance": false,
-    "requiresReplacement": false,
-    "icon": ""
-  },
-  {
-    "key": "paternity",
-    "label": "Congedo di paternità",
-    "countsAgainstBalance": false,
-    "requiresReplacement": false,
-    "icon": ""
-  },
-  {
-    "key": "parental",
-    "label": "Congedo parentale",
-    "countsAgainstBalance": false,
-    "requiresReplacement": false,
-    "icon": ""
-  },
-  {
-    "key": "marriage",
-    "label": "Congedo matrimoniale",
-    "countsAgainstBalance": false,
-    "requiresReplacement": false,
-    "icon": ""
-  },
-  {
-    "key": "bereavement",
-    "label": "Permesso per lutto",
-    "countsAgainstBalance": false,
-    "requiresReplacement": false,
-    "icon": ""
-  },
-  {
-    "key": "law_104",
-    "label": "Permesso Legge 104",
-    "countsAgainstBalance": false,
-    "requiresReplacement": false,
-    "icon": ""
-  },
-  {
-    "key": "blood_donation",
-    "label": "Donazione sangue",
-    "countsAgainstBalance": false,
-    "requiresReplacement": false,
-    "icon": ""
-  },
-  {
-    "key": "medical_visit",
-    "label": "Permesso per visita medica",
-    "countsAgainstBalance": false,
-    "requiresReplacement": false,
-    "icon": ""
-  },
-  {
-    "key": "study",
-    "label": "Permesso per studio o esami",
-    "countsAgainstBalance": false,
-    "requiresReplacement": false,
-    "icon": ""
-  },
-  {
-    "key": "special",
-    "label": "Altro permesso",
     "countsAgainstBalance": false,
     "requiresReplacement": false,
     "icon": ""

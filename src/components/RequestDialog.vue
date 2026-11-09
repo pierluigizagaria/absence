@@ -51,7 +51,7 @@
 				</NcSelect>
 			</div>
 
-			<div v-if="selectedType" class="dialog__field">
+			<div v-if="selectedType && store.session.replacementsEnabled" class="dialog__field">
 				<label class="dialog__label">
 					{{ t('absence', needsReplacement ? 'Replacement' : 'Replacement (optional)') }}<span v-if="needsReplacement" class="dialog__req">*</span>
 				</label>
@@ -196,6 +196,7 @@ export default {
 	emits: ['close', 'saved'],
 	data() {
 		return {
+			store,
 			selectedType: null,
 			startIso: null,
 			endIso: null,
@@ -249,7 +250,7 @@ export default {
 		},
 
 		needsReplacement() {
-			return this.selectedType ? this.selectedType.requiresReplacement : false
+			return store.session.replacementsEnabled && this.selectedType ? this.selectedType.requiresReplacement : false
 		},
 
 		// Bridge the native date pickers (Date objects) to our ISO string state.
@@ -486,7 +487,7 @@ export default {
 			if (this.hrMode && this.selectedEmployee) {
 				payload.employeeUid = this.selectedEmployee.uid
 			}
-			if (this.selectedReplacement) {
+			if (store.session.replacementsEnabled && this.selectedReplacement) {
 				payload.replacementUid = this.selectedReplacement.uid
 			} else {
 				payload.replacementUid = null
