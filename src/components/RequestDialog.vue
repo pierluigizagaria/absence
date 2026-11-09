@@ -51,13 +51,14 @@
 				</NcSelect>
 			</div>
 
-			<div v-if="needsReplacement" class="dialog__field">
+			<div v-if="selectedType" class="dialog__field">
 				<label class="dialog__label">
-					{{ t('absence', 'Replacement') }}<span class="dialog__req">*</span>
+					{{ t('absence', needsReplacement ? 'Replacement' : 'Replacement (optional)') }}<span v-if="needsReplacement" class="dialog__req">*</span>
 				</label>
 				<!-- eslint-disable @nextcloud/no-deprecated-library-props -- NcSelectUsers migration deferred: needs live-instance testing -->
 				<NcSelect
 					v-model="selectedReplacement"
+					:clearable="true"
 					:options="replacementOptions"
 					:loading="replacementLoading"
 					:userSelect="true"
@@ -411,7 +412,7 @@ export default {
 				this.endIso = today
 				// Prefill the replacement used last time (self-service only).
 				if (!this.hrMode) {
-					this.selectedReplacement = this.pastReplacements()[0] || null
+					this.selectedReplacement = this.needsReplacement ? (this.pastReplacements()[0] || null) : null
 				}
 			}
 			// Offer colleagues used before so the dropdown isn't empty (self-service).
@@ -485,8 +486,10 @@ export default {
 			if (this.hrMode && this.selectedEmployee) {
 				payload.employeeUid = this.selectedEmployee.uid
 			}
-			if (this.needsReplacement && this.selectedReplacement) {
+			if (this.selectedReplacement) {
 				payload.replacementUid = this.selectedReplacement.uid
+			} else {
+				payload.replacementUid = null
 			}
 			try {
 				if (this.isEdit) {

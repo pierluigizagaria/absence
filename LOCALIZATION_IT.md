@@ -1,10 +1,14 @@
 # Absence: adattamento italiano per un contesto lavorativo
 
 Ramo locale basato sul tag ufficiale `v1.0.6`, commit
-`db4e1d068ccbbabe240b8117a30dcadb463e147a`. La versione `1.0.7` di questo ramo
+`db4e1d068ccbbabe240b8117a30dcadb463e147a`. La versione `1.0.8` di questo ramo
 identifica una build personalizzata, non una release ufficiale Nextcloud.
 
-- Catalogo italiano: 332 voci, inclusi plurali, notifiche ed errori applicativi.
+- Interfaccia senza emoticon; icona di navigazione a calendario monocromatico.
+- Campo sostituto visibile e facoltativo nel profilo italiano; selezione valida e rimozione testate.
+- Modello con 16 tipologie principali in `resources/italian-leave-types.json`.
+- Politica di riporto con tre scelte esplicite, compatibili con il modulo impostazioni Nextcloud 35.
+- Catalogo italiano: 342 voci, inclusi plurali, notifiche ed errori applicativi.
 - Terminologia: ferie, permessi, richieste di assenza, responsabile e ufficio del personale.
 - Date e numeri dell'interfaccia seguono la lingua/locale impostata in Nextcloud.
 - CSV italiano: UTF-8 con BOM, separatore `;`, virgola decimale, date `gg/mm/aaaa`,
@@ -14,6 +18,8 @@ identifica una build personalizzata, non una release ufficiale Nextcloud.
 - I nomi delle tipologie personalizzate non vengono riscritti nel database.
 - Una migrazione rende vuoto il solo valore predefinito SQL dell'icona, per evitare
   differenze di schema con i metadati MariaDB. Le icone già memorizzate restano intatte.
+
+Le quantità restano espresse in giorni o frazioni di giorno. Il modello non introduce contatori ROL/ex festività in ore; i tipi aggiuntivi non consumano il saldo ferie.
 
 La patch non definisce un CCNL, non modifica il monte ferie predefinito di 25 giorni
 e non cambia regole di approvazione, ruoli o contabilizzazione. Tali impostazioni
@@ -25,7 +31,7 @@ Build con Node 24 e `npm ci --legacy-peer-deps --ignore-scripts`, controllo dei
 segnaposto di traduzione, sintassi PHP e schema Nextcloud. Su una copia isolata di
 Nextcloud 35.0.2 con MariaDB 11.8 e Redis: autenticazione dipendente/personale,
 richiesta e approvazione ferie, saldo 25 → 24, rifiuto dell'autoapprovazione,
-protezione dei report, errori italiani e CSV con date/intestazioni/stati italiani.
+protezione dei report, errori italiani e CSV con date/intestazioni/stati italiani. Sono stati verificati anche sostituto omesso, valido, rimosso e non valido, oltre al salvataggio delle tre politiche di riporto.
 
 ## Manutenzione
 

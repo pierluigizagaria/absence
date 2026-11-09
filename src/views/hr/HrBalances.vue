@@ -62,7 +62,7 @@
 									hideStatus /> {{ row.displayName }}
 							</div>
 						</td>
-						<td><span class="type"><span aria-hidden="true">{{ row.typeIcon }}</span> {{ t('absence', row.typeLabel) }}</span></td>
+						<td><span class="type"> {{ t('absence', row.typeLabel) }}</span></td>
 						<td class="num">
 							{{ fmt(row.entitlement) }}
 						</td>

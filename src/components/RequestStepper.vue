@@ -30,28 +30,28 @@ export default {
 	computed: {
 		steps() {
 			const s = this.status
-			const requested = { label: t('absence', 'Requested'), state: 'done', tone: 'default', icon: '📝' }
+			const requested = { label: t('absence', 'Requested'), state: 'done', tone: 'default', icon: '' }
 
 			let review
 			if (['PENDING', 'ESCALATED', 'WITHDRAWAL_PENDING'].includes(s)) {
-				review = { label: s === 'ESCALATED' ? t('absence', 'With HR') : t('absence', 'In review'), state: 'current', tone: 'default', icon: '⏳' }
+				review = { label: s === 'ESCALATED' ? t('absence', 'With HR') : t('absence', 'In review'), state: 'current', tone: 'default', icon: '' }
 			} else {
-				review = { label: t('absence', 'Reviewed'), state: 'done', tone: 'default', icon: '👀' }
+				review = { label: t('absence', 'Reviewed'), state: 'done', tone: 'default', icon: '' }
 			}
 
 			let outcome
 			switch (s) {
 				case 'APPROVED':
-					outcome = { label: t('absence', 'Approved'), state: 'done', tone: 'success', icon: '✅' }
+					outcome = { label: t('absence', 'Approved'), state: 'done', tone: 'success', icon: '' }
 					break
 				case 'REJECTED':
-					outcome = { label: t('absence', 'Declined'), state: 'done', tone: 'error', icon: '✋' }
+					outcome = { label: t('absence', 'Declined'), state: 'done', tone: 'error', icon: '' }
 					break
 				case 'CANCELLED':
-					outcome = { label: t('absence', 'Cancelled'), state: 'done', tone: 'muted', icon: '🚫' }
+					outcome = { label: t('absence', 'Cancelled'), state: 'done', tone: 'muted', icon: '' }
 					break
 				case 'WITHDRAWAL_PENDING':
-					outcome = { label: t('absence', 'Withdrawing'), state: 'current', tone: 'default', icon: '↩️' }
+					outcome = { label: t('absence', 'Withdrawing'), state: 'current', tone: 'default', icon: '↩' }
 					break
 				default:
 					outcome = { label: t('absence', 'Decision'), state: 'future', tone: 'default', icon: '•' }

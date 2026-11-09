@@ -4,7 +4,7 @@
 -->
 <template>
 	<span class="type-chip" :style="{ '--type-color': type.color }">
-		<span class="type-chip__icon" aria-hidden="true">{{ type.icon }}</span>
+
 		{{ type.label }}
 	</span>
 </template>

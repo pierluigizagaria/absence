@@ -221,7 +221,7 @@ class AbsenceWidget implements IAPIWidget, IAPIWidgetV2, IIconWidget {
 	private function typeLabels(): array {
 		$labels = [];
 		foreach ($this->leaveTypeMapper->findAll() as $type) {
-			$labels[$type->getId()] = $type->getIcon() . ' ' . $this->l->t($type->getLabel());
+			$labels[$type->getId()] = $this->l->t($type->getLabel());
 		}
 		return $labels;
 	}

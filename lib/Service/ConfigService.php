@@ -129,6 +129,15 @@ class ConfigService {
 	 * @throws ValidationException on out-of-range or unknown values/keys
 	 */
 	public function setAdminValue(string $key, mixed $value): void {
+		// A select can submit a one-item list or the selected option object.
+		if (in_array($key, [ConfigLexicon::KEY_CARRYOVER_POLICY, ConfigLexicon::KEY_SHARED_VISIBILITY], true) && is_array($value)) {
+			if (array_is_list($value) && count($value) === 1) {
+				$value = $value[0];
+			}
+			if (is_array($value) && array_key_exists('value', $value)) {
+				$value = $value['value'];
+			}
+		}
 		switch ($key) {
 			case ConfigLexicon::KEY_ESCALATION_WINDOW:
 			case ConfigLexicon::KEY_REMINDER_LEAD:

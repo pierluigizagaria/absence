@@ -17,7 +17,7 @@
 		</header>
 
 		<section v-if="nextBreak" class="hero" :style="{ '--accent': nextBreak.color }">
-			<span class="hero__emoji" aria-hidden="true">{{ nextBreak.icon }}</span>
+
 			<div class="hero__text">
 				<span class="hero__eyebrow">{{ nextBreak.eyebrow }}</span>
 				<strong class="hero__headline">{{ nextBreak.headline }}</strong>
@@ -138,7 +138,7 @@ export default {
 					icon: type.icon,
 					color: type.color,
 					eyebrow: t('absence', 'You are off right now'),
-					headline: t('absence', 'Enjoy your {type}! 🌴', { type: type.label.toLowerCase() }),
+					headline: t('absence', 'Enjoy your {type}!', { type: type.label.toLowerCase() }),
 					sub: range,
 				}
 			}

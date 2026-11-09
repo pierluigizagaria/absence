@@ -84,7 +84,7 @@ class RequestController extends Controller {
 		if ($attachmentNote !== null) {
 			$data['attachmentNote'] = $attachmentNote;
 		}
-		if ($replacementUid !== null) {
+		if ($replacementUid !== null || array_key_exists('replacementUid', $this->request->getParams())) {
 			$data['replacementUid'] = $replacementUid;
 		}
 		return $this->handle(fn () => $this->service->update((string)$this->userId, $id, $data)->jsonSerialize());

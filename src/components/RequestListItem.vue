@@ -10,7 +10,7 @@
 			:forceDisplayActions="true"
 			@click="$emit('select', request.id)">
 			<template #icon>
-				<span class="rli__icon" :style="{ background: colorSoft }" aria-hidden="true">{{ type.icon }}</span>
+
 			</template>
 			<template #subname>
 				{{ subtitle }}

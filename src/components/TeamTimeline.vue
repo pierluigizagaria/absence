@@ -68,7 +68,7 @@
 							:class="{ 'gantt__pill--pending': seg.pending }"
 							:style="{ left: seg.left + 'px', width: seg.width + 'px', '--pill': seg.color }"
 							:title="seg.title">
-							<span class="gantt__pill-icon" aria-hidden="true">{{ seg.icon }}</span>
+
 						</span>
 					</div>
 				</div>
@@ -77,7 +77,7 @@
 			<NcEmptyContent
 				v-if="!rows.length"
 				:name="t('absence', 'No absences this month')"
-				:description="t('absence', 'A calm, well-staffed month. ☀️')">
+				:description="t('absence', 'A calm, well-staffed month.')">
 				<template #icon>
 					<CalendarBlank :size="20" />
 				</template>
@@ -86,7 +86,7 @@
 
 		<div class="legend">
 			<span v-for="lt in legendTypes" :key="lt.id" class="legend__item">
-				<span class="legend__swatch" :style="{ background: lt.color }" />{{ lt.icon }} {{ lt.label }}
+				<span class="legend__swatch" :style="{ background: lt.color }" />{{ lt.label }}
 			</span>
 			<span class="legend__item legend__item--muted">
 				<span class="legend__swatch legend__swatch--pending" />{{ t('absence', 'Pending / not yet approved') }}

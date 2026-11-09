@@ -50,7 +50,7 @@ class LeaveTypeController extends Controller {
 
 	#[NoAdminRequired]
 	#[UserRateLimit(limit: 30, period: 60)]
-	public function create(string $key, string $label, string $color = '#0082c9', string $icon = '🌴', bool $countsAgainstBalance = false, bool $requiresApproval = true, bool $requiresNote = false, bool $requiresReplacement = false, bool $employeeRequestable = true, int $sortOrder = 0): DataResponse {
+	public function create(string $key, string $label, string $color = '#0082c9', string $icon = '', bool $countsAgainstBalance = false, bool $requiresApproval = true, bool $requiresNote = false, bool $requiresReplacement = false, bool $employeeRequestable = true, int $sortOrder = 0): DataResponse {
 		return $this->handle(function () use ($key, $label, $color, $icon, $countsAgainstBalance, $requiresApproval, $requiresNote, $requiresReplacement, $employeeRequestable, $sortOrder) {
 			$this->permission->assertHr((string)$this->userId);
 			$this->assertValidColor($color);

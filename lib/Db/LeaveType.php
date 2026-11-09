@@ -38,7 +38,7 @@ class LeaveType extends Entity implements \JsonSerializable {
 	protected string $key = '';
 	protected string $label = '';
 	protected string $color = '#0082c9';
-	protected string $icon = '🌴';
+	protected string $icon = '';
 	protected bool $countsAgainstBalance = true;
 	protected bool $requiresApproval = true;
 	protected bool $requiresNote = false;

@@ -49,9 +49,9 @@ export const store = reactive({
 		// A null/undefined id means the server withheld the leave type (neutral
 		// shared-calendar visibility): show a generic "Absent" marker, not "Unknown".
 		if (id === null || id === undefined) {
-			return { label: t('absence', 'Absent'), color: '#888', icon: '🌴' }
+			return { label: t('absence', 'Absent'), color: '#888', icon: '' }
 		}
-		return this.leaveTypes.find((t) => t.id === id) || { label: t('absence', 'Unknown'), color: '#888', icon: '❔' }
+		return this.leaveTypes.find((t) => t.id === id) || { label: t('absence', 'Unknown'), color: '#888', icon: '' }
 	},
 	/**
 	 * True when the type is recorded by HR (e.g. sick leave), not self-requested.
@@ -109,7 +109,7 @@ export const store = reactive({
 
 	async createRequest(data) {
 		const created = await api.createRequest(data)
-		showSuccess(t('absence', 'On its way ✈️'))
+		showSuccess(t('absence', 'On its way'))
 		await this.refreshSession()
 		return created
 	},
@@ -155,17 +155,17 @@ export const store = reactive({
 export function statusMeta(status) {
 	switch (status) {
 		case 'PENDING':
-			return { label: t('absence', 'Pending'), text: 'var(--color-warning-text)', tint: 'var(--color-warning)', icon: '⏳' }
+			return { label: t('absence', 'Pending'), text: 'var(--color-warning-text)', tint: 'var(--color-warning)', icon: '' }
 		case 'ESCALATED':
-			return { label: t('absence', 'With HR'), text: 'var(--color-warning-text)', tint: 'var(--color-warning)', icon: '⏫' }
+			return { label: t('absence', 'With HR'), text: 'var(--color-warning-text)', tint: 'var(--color-warning)', icon: '' }
 		case 'APPROVED':
-			return { label: t('absence', 'Approved'), text: 'var(--color-success-text)', tint: 'var(--color-success)', icon: '✅' }
+			return { label: t('absence', 'Approved'), text: 'var(--color-success-text)', tint: 'var(--color-success)', icon: '' }
 		case 'REJECTED':
-			return { label: t('absence', 'Declined'), text: 'var(--color-error-text)', tint: 'var(--color-error)', icon: '✋' }
+			return { label: t('absence', 'Declined'), text: 'var(--color-error-text)', tint: 'var(--color-error)', icon: '' }
 		case 'CANCELLED':
-			return { label: t('absence', 'Cancelled'), text: 'var(--color-text-maxcontrast)', tint: 'var(--color-text-maxcontrast)', icon: '🚫' }
+			return { label: t('absence', 'Cancelled'), text: 'var(--color-text-maxcontrast)', tint: 'var(--color-text-maxcontrast)', icon: '' }
 		case 'WITHDRAWAL_PENDING':
-			return { label: t('absence', 'Withdrawal pending'), text: 'var(--color-warning-text)', tint: 'var(--color-warning)', icon: '↩️' }
+			return { label: t('absence', 'Withdrawal pending'), text: 'var(--color-warning-text)', tint: 'var(--color-warning)', icon: '↩' }
 		default:
 			return { label: status, text: 'var(--color-main-text)', tint: 'var(--color-text-maxcontrast)', icon: '•' }
 	}

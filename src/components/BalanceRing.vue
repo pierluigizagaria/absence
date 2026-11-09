@@ -25,7 +25,7 @@
 			<text x="60" y="74" class="ring__unit">{{ t('absence', 'left') }}</text>
 		</svg>
 		<div class="ring__label">
-			<span class="ring__icon" aria-hidden="true">{{ row.typeIcon }}</span>
+
 			<span class="ring__name">{{ t('absence', row.typeLabel) }}</span>
 		</div>
 		<div class="ring__meta">

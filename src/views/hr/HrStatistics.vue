@@ -19,17 +19,17 @@
 		<template v-else>
 			<div class="cards">
 				<div class="card">
-					<span class="card__icon" aria-hidden="true">🏖️</span>
+
 					<span class="card__value">{{ fmt(trends.total) }}</span>
 					<span class="card__label">{{ t('absence', 'approved leave days') }}</span>
 				</div>
 				<div class="card">
-					<span class="card__icon" aria-hidden="true">📊</span>
+
 					<span class="card__value">{{ fmt(perMonthAvg) }}</span>
 					<span class="card__label">{{ t('absence', 'avg. days per month') }}</span>
 				</div>
 				<div class="card">
-					<span class="card__icon" aria-hidden="true">🗂️</span>
+
 					<span class="card__value">{{ trends.byType.length }}</span>
 					<span class="card__label">{{ t('absence', 'leave types used') }}</span>
 				</div>
@@ -89,7 +89,7 @@ export default {
 
 		typeData() {
 			return this.trends.byType.map((tt) => ({
-				label: `${tt.typeIcon || ''} ${this.t('absence', tt.typeLabel)}`.trim(),
+				label: this.t('absence', tt.typeLabel),
 				value: tt.days,
 				color: tt.typeColor,
 			}))

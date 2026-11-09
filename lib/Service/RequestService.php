@@ -57,11 +57,11 @@ class RequestService {
 	 * @throws ValidationException
 	 */
 	private function resolveReplacement(string $employeeUid, LeaveType $type, ?string $replacementUid): ?string {
-		if (!$type->getRequiresReplacement()) {
-			return $replacementUid !== null && trim($replacementUid) !== '' ? trim($replacementUid) : null;
-		}
 		$replacementUid = trim((string)$replacementUid);
 		if ($replacementUid === '') {
+			if (!$type->getRequiresReplacement()) {
+				return null;
+			}
 			throw new ValidationException('Please choose a replacement for this leave.');
 		}
 		if ($replacementUid === $employeeUid) {
@@ -320,7 +320,7 @@ class RequestService {
 		$this->validateRange($actorUid, $start, $end, $type, (string)($data['reason'] ?? $request->getReason() ?? ''), (string)($data['attachmentNote'] ?? $request->getAttachmentNote() ?? ''));
 		$this->assertNoOverlap($request->getEmployeeUid(), $start, $end, $this->chainExcludeIds($request));
 
-		$replacementUid = $this->resolveReplacement($request->getEmployeeUid(), $type, $data['replacementUid'] ?? $request->getReplacementUid());
+		$replacementUid = $this->resolveReplacement($request->getEmployeeUid(), $type, array_key_exists('replacementUid', $data) ? $data['replacementUid'] : $request->getReplacementUid());
 
 		$request->setTypeId($type->getId());
 		$request->setStartDate($start);
@@ -363,7 +363,7 @@ class RequestService {
 		$this->validateRange($actorUid, $start, $end, $type, (string)($data['reason'] ?? ''), (string)($data['attachmentNote'] ?? ''));
 		// The original still occupies its dates; exclude it and its chain from the check.
 		$this->assertNoOverlap($actorUid, $start, $end, $this->chainExcludeIds($original));
-		$replacementUid = $this->resolveReplacement($actorUid, $type, $data['replacementUid'] ?? $original->getReplacementUid());
+		$replacementUid = $this->resolveReplacement($actorUid, $type, array_key_exists('replacementUid', $data) ? $data['replacementUid'] : $original->getReplacementUid());
 
 		$now = new \DateTime();
 		$managerUid = $this->managerResolver->getManagerUid($actorUid);

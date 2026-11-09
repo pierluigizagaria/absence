@@ -20,11 +20,11 @@ use OCP\Migration\IRepairStep;
 class SeedLeaveTypes implements IRepairStep {
 	/** @var array<int,array{key:string,label:string,color:string,icon:string,balance:bool,approval:bool,note:bool,requestable:bool,replacement:bool}> */
 	private const DEFAULTS = [
-		['key' => 'annual', 'label' => 'Annual leave', 'color' => '#2d7d46', 'icon' => '🌴', 'balance' => true, 'approval' => true, 'note' => false, 'requestable' => true, 'replacement' => true],
+		['key' => 'annual', 'label' => 'Annual leave', 'color' => '#2d7d46', 'icon' => '', 'balance' => true, 'approval' => true, 'note' => false, 'requestable' => true, 'replacement' => false],
 		// Sick leave is recorded by HR, not self-requested (no approval workflow, no replacement).
-		['key' => 'sick', 'label' => 'Sick leave', 'color' => '#c9791e', 'icon' => '🤒', 'balance' => false, 'approval' => false, 'note' => false, 'requestable' => false, 'replacement' => false],
-		['key' => 'unpaid', 'label' => 'Unpaid leave', 'color' => '#6c6c6c', 'icon' => '💸', 'balance' => false, 'approval' => true, 'note' => false, 'requestable' => true, 'replacement' => true],
-		['key' => 'special', 'label' => 'Special leave', 'color' => '#4271a6', 'icon' => '🕊️', 'balance' => false, 'approval' => true, 'note' => false, 'requestable' => true, 'replacement' => true],
+		['key' => 'sick', 'label' => 'Sick leave', 'color' => '#c9791e', 'icon' => '', 'balance' => false, 'approval' => false, 'note' => false, 'requestable' => false, 'replacement' => false],
+		['key' => 'unpaid', 'label' => 'Unpaid leave', 'color' => '#6c6c6c', 'icon' => '', 'balance' => false, 'approval' => true, 'note' => false, 'requestable' => true, 'replacement' => false],
+		['key' => 'special', 'label' => 'Special leave', 'color' => '#4271a6', 'icon' => '', 'balance' => false, 'approval' => true, 'note' => false, 'requestable' => true, 'replacement' => false],
 	];
 
 	public function __construct(

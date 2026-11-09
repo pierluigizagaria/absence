@@ -30,7 +30,7 @@
 
 			<section v-if="escalated.length" class="group">
 				<h3 class="group__title">
-					{{ t('absence', 'Escalated to HR') }} ⏫
+					{{ t('absence', 'Escalated to HR') }}
 				</h3>
 				<TransitionGroup tag="ul" name="rli" class="list">
 					<RequestListItem
@@ -46,7 +46,7 @@
 			<NcEmptyContent
 				v-if="!teamQueue.length && !escalated.length"
 				:name="t('absence', 'All caught up!')"
-				:description="t('absence', 'No requests waiting for a decision. ✨')">
+				:description="t('absence', 'No requests waiting for a decision.')">
 				<template #icon>
 					<CheckAll :size="20" />
 				</template>

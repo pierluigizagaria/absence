@@ -75,7 +75,7 @@ class AdminDeclarativeSettings implements IDeclarativeSettingsFormWithHandlers {
 				[
 					'id' => ConfigLexicon::KEY_CARRYOVER_POLICY,
 					'title' => $this->l->t('Carry-over policy'),
-					'type' => DeclarativeSettingsTypes::SELECT,
+					'type' => DeclarativeSettingsTypes::RADIO,
 					'default' => ConfigService::CARRYOVER_CAPPED,
 					'options' => [
 						['name' => $this->l->t('No carry-over'), 'value' => ConfigService::CARRYOVER_NONE],

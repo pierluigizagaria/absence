@@ -25,7 +25,7 @@
 				<StatusChip :status="ev.status" />
 			</li>
 		</ul>
-		<NcEmptyContent v-else :name="t('absence', 'Nobody else is off 🎉')">
+		<NcEmptyContent v-else :name="t('absence', 'Nobody else is off')">
 			<template #icon>
 				<AccountGroup :size="20" />
 			</template>

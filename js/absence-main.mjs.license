@@ -22,7 +22,7 @@ This file is generated from multiple sources. Included packages:
 	- version: 14.3.0
 	- license: MIT
 - absence
-	- version: 1.0.7
+	- version: 1.0.8
 	- license: AGPL-3.0-or-later
 - linkifyjs
 	- version: 4.3.3
